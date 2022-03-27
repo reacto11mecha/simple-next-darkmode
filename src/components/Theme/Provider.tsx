@@ -3,9 +3,8 @@ import { DarkModeContext } from "./Context";
 import type { propsType, darkModeStateType } from "./types";
 
 export default function Provider(props: propsType) {
-  const [isDarkTheme, setDarkTheme] = React.useState<darkModeStateType>(
-    undefined
-  );
+  const [isDarkTheme, setDarkTheme] =
+    React.useState<darkModeStateType>(undefined);
 
   const toggleTheme = React.useCallback(
     () => setDarkTheme((prev) => !prev),
@@ -33,12 +32,21 @@ export default function Provider(props: propsType) {
     );
 
     setDarkTheme(initialColorValue === "dark");
+
+    const localStorageCb = () =>
+      setDarkTheme(window.localStorage.getItem("theme") === "dark");
+
+    window.addEventListener("storage", localStorageCb);
+
+    return () => {
+      window.removeEventListener("storage", localStorageCb);
+    };
   }, []);
 
-  const providerValue = React.useMemo(() => ({ isDarkTheme, toggleTheme }), [
-    isDarkTheme,
-    toggleTheme,
-  ]);
+  const providerValue = React.useMemo(
+    () => ({ isDarkTheme, toggleTheme }),
+    [isDarkTheme, toggleTheme]
+  );
 
   return <DarkModeContext.Provider value={providerValue} {...props} />;
 }
