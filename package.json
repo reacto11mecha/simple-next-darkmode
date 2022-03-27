@@ -1,7 +1,17 @@
 {
   "name": "simple-next-darkmode",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple Next.js dark mode library that works with CSS variables",
+  "author": "Ezra Khairan Permana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reacto11mecha/simple-next-darkmode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reacto11mecha/simple-next-darkmode.git"
+  },
+  "homepage": "https://github.com/reacto11mecha/simple-next-darkmode#readme",
   "dependencies": {
     "terser": "^5.12.1"
   },
@@ -23,20 +33,15 @@
   "scripts": {
     "rollup": "rollup -c"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/reacto11mecha/simple-next-darkmode.git"
-  },
-  "author": "Ezra Khairan Permana",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/reacto11mecha/simple-next-darkmode/issues"
-  },
-  "homepage": "https://github.com/reacto11mecha/simple-next-darkmode#readme",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "typescript",
+    "nextjs",
+    "dark-theme"
+  ]
 }
