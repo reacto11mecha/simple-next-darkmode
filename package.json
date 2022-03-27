@@ -60,7 +60,7 @@
     "dark-theme"
   ],
   "lint-staged": {
-    "*.{ts,js}": "eslint --cache --fix",
-    "*.{ts,js,md}": "prettier --write"
+    "*.{ts.tsx,js}": "eslint --cache --fix",
+    "*.{ts,tsx,js,md}": "prettier --write"
   }
 }
