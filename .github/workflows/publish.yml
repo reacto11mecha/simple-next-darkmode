@@ -1,0 +1,42 @@
+name: Github action for publishing package to npm registry
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    name: Publish package to npm registry
+
+  steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup NodeJS 16
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+        registry-url: "https://registry.npmjs.org"
+
+    - name: Install Node Dependencies
+      run: npm install
+      env:
+        CI: TRUE
+
+    - name: Test Code Linting
+      run: npm run lint
+      continue-on-error: false
+
+    - name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v3
+      with:
+        branches: main
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
