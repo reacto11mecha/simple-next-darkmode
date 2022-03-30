@@ -5,12 +5,13 @@ on:
     types: [closed]
     branches:
       - main
+      - dev
 
 jobs:
   publish:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    name: Publish package to npm registry
+    name: Publish package ke npm
 
     steps:
       - name: "Checkout repository"
@@ -19,24 +20,34 @@ jobs:
           fetch-depth: 0
 
       - name: Setup NodeJS 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://registry.npmjs.org"
 
-      - name: Install Node Dependencies
-        run: npm install
-        env:
-          CI: TRUE
+      - name: Installing Dependencies
+        run: |
+          npx lerna bootstrap
+          npx lerna link
 
-      - name: Test Code Linting
+      - name: Linting
         run: npm run lint
         continue-on-error: false
 
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
-        with:
-          branches: main
+      - name: Configuring Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor}}@users.noreply.github.com"
+
+      - name: Versioning package
+        run: |
+          if [ ${{ github.base_ref }} = dev ]; then
+            npx lerna version --conventional-commits --conventional-prerelease --preid beta --yes
+          else
+            npx lerna version --conventional-commits --conventional-graduate --yes
+          fi
+
+      - name: Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: npx lerna publish from-package --yes

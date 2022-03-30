@@ -37,5 +37,5 @@ export default async function getThemeIntializer(): Promise<string> {
   `;
 
   if (process.env.NODE_ENV === "development") return runner;
-  else return minify(runner).then(({ code }) => (code as unknown) as string);
+  else return minify(runner).then(({ code }) => code as unknown as string);
 }
