@@ -26,9 +26,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Installing Dependencies
-        run: |
-          npx lerna bootstrap
-          npx lerna link
+        run: npm install
 
       - name: Linting
         run: npm run lint
